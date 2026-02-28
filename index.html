@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Billing - ADFC</title>
+    <style>
+        :root {
+            --primary-bg: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-main: #333;
+            --border-color: #ddd;
+            --accent: #2c3e50;
+            --danger: #d32f2f;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .no-print-zone {
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .btn-print {
+            background-color: var(--accent);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .container {
+            background: var(--card-bg);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--text-main);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        header h1 { margin: 0; font-size: 1.5rem; text-transform: uppercase; }
+        header p { margin: 5px 0; font-weight: bold; }
+
+        .student-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .info-group p { margin: 5px 0; }
+        .label { font-weight: bold; color: #666; font-size: 0.8rem; text-transform: uppercase; }
+
+        /* Status Badge Styling */
+        .status-badge {
+            display: inline-block;
+            background-color: #ffebee;
+            color: var(--danger);
+            border: 1px solid var(--danger);
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .billing-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .section { padding: 15px; }
+        .left-panel { border-right: 1px solid var(--border-color); }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th { text-align: left; border-bottom: 1px solid var(--border-color); padding: 8px 0; }
+        td { padding: 8px 0; }
+
+        .due-box {
+            background: #f9f9f9;
+            padding: 15px;
+            border: 1px dashed #999;
+            margin-bottom: 20px;
+        }
+
+        .amount-due { font-size: 1.2rem; font-weight: bold; color: var(--danger); }
+        .amount-words { font-style: italic; font-size: 0.8rem; margin-top: 5px; display: block; }
+
+        .total-row { border-top: 2px solid #333; font-weight: bold; }
+        .text-right { text-align: right; }
+
+        footer {
+            margin-top: 60px;
+            text-align: right;
+        }
+
+        .signature {
+            border-top: 1px solid #000;
+            display: inline-block;
+            min-width: 200px;
+            padding-top: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        @media print {
+            body { background-color: white; padding: 0; }
+            .no-print-zone { display: none; }
+            .container { box-shadow: none; border: none; width: 100%; padding: 0; }
+            .due-box { background: white !important; border: 1px solid #000; }
+            .status-badge { background: white !important; border: 1px solid black; color: black; }
+        }
+
+        @media (max-width: 600px) {
+            .billing-grid { grid-template-columns: 1fr; }
+            .left-panel { border-right: none; border-bottom: 1px solid var(--border-color); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="no-print-zone">
+    <button class="btn-print" onclick="window.print()">Print / Save as PDF</button>
+</div>
+
+<div class="container">
+    <header>
+        <h1>Asian Development Foundation College</h1>
+        <p>Tacloban City</p>
+        <div style="margin-top: 10px;">PRELIMINARY EXAMINATION 2026 - S2</div>
+    </header>
+
+    <div class="student-info">
+        <div class="info-group">
+            <span class="label">Student Name</span>
+            <p><strong>ABINA RAFAELA GRACE V.</strong></p>
+        </div>
+        <div class="info-group" style="text-align: right;">
+            <span class="label">Course & Year</span>
+            <p><strong>BSCS Yr. 4</strong></p>
+        </div>
+    </div>
+
+    <div class="billing-grid">
+        <div class="section left-panel">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Subject</th>
+                        <th class="text-right">Unit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>0375</td><td>ITP 422</td><td class="text-right">6.0</td></tr>
+                    <tr><td>0380</td><td>CSP 413L</td><td class="text-right">3.0</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="due-box">
+                <span class="label">Amount Due:</span><br>
+                <span class="amount-due">Php 3,348</span>
+                <span class="amount-words">[ THREE THOUSAND THREE HUNDRED FORTY-EIGHT ]</span>
+                
+                <div class="status-badge">
+                    STATUS: Overdue February 23 - 25
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Particulars</th>
+                        <th class="text-right">Total Fees</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Tuition</td><td class="text-right">12,992.00</td></tr>
+                    <tr><td>Matric Fee</td><td class="text-right">400.00</td></tr>
+                    <tr><td>Handouts</td><td class="text-right">0.00</td></tr>
+                    <tr><td>Package</td><td class="text-right">0.00</td></tr>
+                    <tr class="total-row">
+                        <td>BALANCE DUE</td>
+                        <td class="text-right">13,392.00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer>
+        <div class="signature">VP Finance</div>
+    </footer>
+</div>
+
+</body>
+</html>
