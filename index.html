@@ -3,217 +3,243 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Billing - ADFC</title>
+    <title>Official Receipt - ADFC</title>
     <style>
         :root {
-            --primary-bg: #f4f7f6;
+            --primary-bg: #f8fafc;
             --card-bg: #ffffff;
-            --text-main: #333;
-            --border-color: #ddd;
-            --accent: #2c3e50;
-            --danger: #d32f2f;
+            --text-main: #1e293b;
+            --border-color: #e2e8f0;
+            --accent: #0f172a;
+            --success: #15803d;
+            --info-blue: #0284c7;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', -apple-system, sans-serif;
             background-color: var(--primary-bg);
             color: var(--text-main);
             margin: 0;
-            padding: 20px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
         .no-print-zone {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             width: 100%;
             max-width: 800px;
             display: flex;
-            justify-content: flex-end;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
-        .btn-print {
-            background-color: var(--accent);
-            color: white;
-            padding: 10px 20px;
+        .btn {
+            padding: 12px 20px;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-print { background-color: var(--accent); color: white; }
+        .btn-share { background-color: var(--info-blue); color: white; }
+
+        .instruction-banner {
+            background-color: #f0f9ff;
+            border: 1px solid #bae6fd;
+            color: #0369a1;
+            padding: 15px;
+            border-radius: 8px;
+            max-width: 800px;
+            width: 100%;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            font-size: 0.9rem;
         }
 
         .container {
             background: var(--card-bg);
             max-width: 800px;
             width: 100%;
-            padding: 40px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
             box-sizing: border-box;
+            position: relative;
         }
 
         header {
             text-align: center;
-            border-bottom: 2px solid var(--text-main);
+            border-bottom: 3px double var(--border-color);
             padding-bottom: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
-        header h1 { margin: 0; font-size: 1.5rem; text-transform: uppercase; }
-        header p { margin: 5px 0; font-weight: bold; }
-
-        .student-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .info-group p { margin: 5px 0; }
-        .label { font-weight: bold; color: #666; font-size: 0.8rem; text-transform: uppercase; }
-
-        /* Status Badge Styling */
-        .status-badge {
+        header h1 { margin: 0; font-size: 1.3rem; text-transform: uppercase; }
+        .receipt-label {
             display: inline-block;
-            background-color: #ffebee;
-            color: var(--danger);
-            border: 1px solid var(--danger);
+            background: var(--success);
+            color: white;
             padding: 4px 12px;
             border-radius: 4px;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             font-weight: bold;
             margin-top: 10px;
         }
 
+        .receipt-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            font-size: 0.85rem;
+        }
+
+        .student-info {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f1f5f9;
+            border-radius: 8px;
+        }
+
+        .label { font-size: 0.65rem; color: #64748b; text-transform: uppercase; font-weight: 700; display: block; }
+        .value { font-size: 0.95rem; font-weight: 600; }
+
         .billing-grid {
             display: grid;
-            grid-template-columns: 1fr 1.5fr;
+            grid-template-columns: 1fr;
             gap: 20px;
             border: 1px solid var(--border-color);
+            border-radius: 8px;
         }
 
         .section { padding: 15px; }
-        .left-panel { border-right: 1px solid var(--border-color); }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9rem;
-        }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        th { text-align: left; color: #64748b; padding-bottom: 8px; border-bottom: 1px solid var(--border-color); }
+        td { padding: 10px 0; }
 
-        th { text-align: left; border-bottom: 1px solid var(--border-color); padding: 8px 0; }
-        td { padding: 8px 0; }
-
-        .due-box {
-            background: #f9f9f9;
+        .total-box {
+            background: #ecfdf5;
             padding: 15px;
-            border: 1px dashed #999;
-            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 1px solid #bcf0da;
+            text-align: center;
+            margin-bottom: 15px;
         }
 
-        .amount-due { font-size: 1.2rem; font-weight: bold; color: var(--danger); }
-        .amount-words { font-style: italic; font-size: 0.8rem; margin-top: 5px; display: block; }
-
-        .total-row { border-top: 2px solid #333; font-weight: bold; }
-        .text-right { text-align: right; }
+        .amount { font-size: 1.5rem; font-weight: 800; color: var(--success); }
+        .balance-row { border-top: 2px solid var(--text-main); font-weight: bold; color: #d32f2f; }
 
         footer {
-            margin-top: 60px;
+            margin-top: 40px;
             text-align: right;
         }
 
-        .signature {
+        .sig-line {
             border-top: 1px solid #000;
+            width: 200px;
             display: inline-block;
-            min-width: 200px;
             padding-top: 5px;
-            text-align: center;
             font-weight: bold;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .student-info { grid-template-columns: 1fr 1fr; }
+            .billing-grid { grid-template-columns: 1fr 1.5fr; }
+            .left-panel { border-right: 1px solid var(--border-color); }
         }
 
         @media print {
-            body { background-color: white; padding: 0; }
-            .no-print-zone { display: none; }
-            .container { box-shadow: none; border: none; width: 100%; padding: 0; }
-            .due-box { background: white !important; border: 1px solid #000; }
-            .status-badge { background: white !important; border: 1px solid black; color: black; }
-        }
-
-        @media (max-width: 600px) {
-            .billing-grid { grid-template-columns: 1fr; }
-            .left-panel { border-right: none; border-bottom: 1px solid var(--border-color); }
+            .no-print-zone, .instruction-banner { display: none; }
+            .container { box-shadow: none; border: 1px solid #eee; width: 100%; }
         }
     </style>
 </head>
 <body>
 
+<div class="instruction-banner">
+    <strong>Action Required:</strong> Please show this digital receipt to the cashier to receive your physical copy of the admission slip.
+</div>
+
 <div class="no-print-zone">
-    <button class="btn-print" onclick="window.print()">Print / Save as PDF</button>
+    <button class="btn btn-print" onclick="window.print()">Download PDF</button>
+    <button class="btn btn-share" onclick="shareReceipt()">Share Receipt</button>
 </div>
 
 <div class="container">
     <header>
         <h1>Asian Development Foundation College</h1>
-        <p>Tacloban City</p>
-        <div style="margin-top: 10px;">PRELIMINARY EXAMINATION 2026 - S2</div>
+        <p>Tacloban City, Philippines</p>
+        <div class="receipt-label">OFFICIAL ELECTRONIC RECEIPT</div>
     </header>
 
-    <div class="student-info">
-        <div class="info-group">
-            <span class="label">Student Name</span>
-            <p><strong>ABINA RAFAELA GRACE V.</strong></p>
+    <div class="receipt-meta">
+        <div>
+            <span class="label">Receipt Number</span>
+            <span class="value">OR-2026-00342</span>
         </div>
-        <div class="info-group" style="text-align: right;">
+        <div style="text-align: right;">
+            <span class="label">Date Processed</span>
+            <span class="value">3/2/26</span>
+        </div>
+    </div>
+
+    <div class="student-info">
+        <div>
+            <span class="label">Student Name</span>
+            <span class="value">ABINA RAFAELA GRACE V.</span>
+        </div>
+        <div>
             <span class="label">Course & Year</span>
-            <p><strong>BSCS Yr. 4</strong></p>
+            <span class="value">BSCS - Year 4</span>
         </div>
     </div>
 
     <div class="billing-grid">
         <div class="section left-panel">
+            <span class="label" style="margin-bottom: 10px;">Enrolled Subjects</span>
             <table>
                 <thead>
                     <tr>
                         <th>Code</th>
                         <th>Subject</th>
-                        <th class="text-right">Unit</th>
+                        <th style="text-align: right;">Units</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>0375</td><td>ITP 422</td><td class="text-right">6.0</td></tr>
-                    <tr><td>0380</td><td>CSP 413L</td><td class="text-right">3.0</td></tr>
+                    <tr><td>0375</td><td>ITP 422</td><td style="text-align: right;">6.0</td></tr>
+                    <tr><td>0380</td><td>CSP 413L</td><td style="text-align: right;">3.0</td></tr>
                 </tbody>
             </table>
         </div>
 
         <div class="section">
-            <div class="due-box">
-                <span class="label">Amount Due:</span><br>
-                <span class="amount-due">Php 3,348</span>
-                <span class="amount-words">[ THREE THOUSAND THREE HUNDRED FORTY-EIGHT ]</span>
-                
-                <div class="status-badge">
-                    STATUS: Overdue February 23 - 25
-                </div>
+            <div class="total-box">
+                <span class="label">Amount Paid</span>
+                <div class="amount">₱ 3,348.00</div>
+                <p style="font-size: 0.75rem; margin-top: 5px; font-weight: bold; color: var(--success);">PARTIAL PAYMENT VERIFIED</p>
             </div>
 
             <table>
-                <thead>
-                    <tr>
-                        <th>Particulars</th>
-                        <th class="text-right">Total Fees</th>
-                    </tr>
-                </thead>
                 <tbody>
-                    <tr><td>Tuition</td><td class="text-right">12,992.00</td></tr>
-                    <tr><td>Matric Fee</td><td class="text-right">400.00</td></tr>
-                    <tr><td>Handouts</td><td class="text-right">0.00</td></tr>
-                    <tr><td>Package</td><td class="text-right">0.00</td></tr>
-                    <tr class="total-row">
-                        <td>BALANCE DUE</td>
-                        <td class="text-right">13,392.00</td>
+                    <tr><td>Total Fees (Assessment)</td><td style="text-align: right;">13,392.00</td></tr>
+                    <tr><td>Less: Payment Made</td><td style="text-align: right;">-3,348.00</td></tr>
+                    <tr class="balance-row">
+                        <td>REMAINING BALANCE</td>
+                        <td style="text-align: right;">₱ 10,044.00</td>
                     </tr>
                 </tbody>
             </table>
@@ -221,9 +247,28 @@
     </div>
 
     <footer>
-        <div class="signature">VP Finance</div>
+        <div class="sig-line">VP Finance</div>
+        <p style="font-size: 0.6rem; color: #94a3b8; margin-top: 4px;">System Generated Receipt</p>
     </footer>
 </div>
+
+<script>
+    async function shareReceipt() {
+        const shareData = {
+            title: 'ADFC Receipt',
+            text: 'Payment Receipt for ABINA RAFAELA GRACE V.',
+            url: window.location.href
+        };
+        try {
+            if (navigator.share) {
+                await navigator.share(shareData);
+            } else {
+                await navigator.clipboard.writeText(window.location.href);
+                alert('Receipt link copied!');
+            }
+        } catch (err) { console.log(err); }
+    }
+</script>
 
 </body>
 </html>
